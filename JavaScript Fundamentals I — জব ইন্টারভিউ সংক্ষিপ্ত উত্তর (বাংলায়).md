@@ -1,55 +1,98 @@
-# JavaScript Fundamentals I — জব ইন্টারভিউ সংক্ষিপ্ত উত্তর (বাংলায়)
+# 🟣 JavaScript Fundamentals I — ইন্টারভিউ সংক্ষিপ্ত উত্তর
 
-**কীভাবে ব্যবহার করবেন:** প্রতিটি উত্তর ৩–৪ লাইনে, মুখে বলার মতো করে লেখা। শেষে তিনটি অংশ: মূল উত্তর, ছোট কোড, আর **AI যুগের এক লাইন** (ইন্টারভিউয়ারকে বলার জন্য ভিন্ন মাত্রা যোগ করতে)।
+**টপিক:** Variables, Data Types, Functions & Scope
+
+> প্রতিটি প্রশ্নে তিনটি অংশ আছে: 🎤 **মুখে যেভাবে বলবেন**, 📌 **মূল পয়েন্ট**, 🔮 **আজকের দিনে ও ভবিষ্যতে**। ইন্টারভিউতে প্রথম অংশটি প্রায় হুবহু বলতে পারবেন।
 
 ---
 
-## Q1. var vs let vs const
+## 1️⃣ var, let ও const-এর পার্থক্য কী?
 
-**উত্তর:** `var` function-scoped, hoisted (মান `undefined`), re-declare ও re-assign করা যায়। `let` block-scoped, re-assign করা যায় না। `const` block-scoped, re-assign হয় না, তবে object/array-এর ভেতরের মান বদলানো যায়। ডিফল্টে `const`, লাগলে `let`, `var` এড়িয়ে চলা।
+> 🎤 **বলুন:** জি, তিনটাই variable declare করার উপায়। পার্থক্য scope আর reassign-এ। var function-scoped, আর let ও const block-scoped। const-এ আবার মান assign করা যায় না, তবে object-এর ভেতরের মান বদলানো যায়। আমি সবসময় const দিয়ে শুরু করি, দরকার হলে let ব্যবহার করি, আর var এড়িয়ে চলি।
+
+📌 **মূল পয়েন্ট**
+- `var`: function scope, hoisted (মান `undefined`), redeclare চলে
+- `let`: block scope, reassign চলে, redeclare চলে না
+- `const`: block scope, reassign চলে না (object mutate চলে)
 
 ```javascript
 const user = { name: "A" };
-user.name = "B";  // OK
+user.name = "B";  // ঠিক আছে
 user = {};        // TypeError
 ```
 
-**AI যুগ:** AI কখনো পুরনো স্টাইলে `var` লেখে; তাই `no-var` / `prefer-const` ESLint রুল রাখা উচিত।
+🔮 **আজ ও ভবিষ্যতে:** প্রফেশনাল টিমে ESLint-এর `no-var` ও `prefer-const` রুল থাকে, তাই const-first অভ্যাসটাই স্ট্যান্ডার্ড।
 
 ---
 
-## Q2. Hoisting
+## 2️⃣ Hoisting কী?
 
-**উত্তর:** Engine কোড চালানোর আগে scope-এর declaration গুলো মেমরিতে রেজিস্টার করে। শুধু **declaration** hoist হয়, **initialization** নয়। `var` → `undefined`; `let`/`const` → TDZ; function declaration → সম্পূর্ণ hoist।
+> 🎤 **বলুন:** Hoisting মানে JavaScript কোড চালানোর আগে scope-এর declaration গুলো মেমরিতে তুলে রাখে। শুধু declaration যায়, মান বসানো যায় না। তাই var-এ undefined পাই, আর let ও const-এ error আসে।
+
+📌 **মূল পয়েন্ট**
+- `var` → মান `undefined`
+- `let` / `const` / `class` → TDZ-তে থাকে
+- Function declaration → পুরো function সহ hoist
+- Function expression → ভেরিয়েবলের নিয়মে চলে
 
 ```javascript
 console.log(x); // undefined
 var x = 5;
+
+sayHi();        // কাজ করে
+function sayHi() { console.log("Hi"); }
 ```
 
-**AI যুগ:** Hoisting জানলে AI-লেখা অদ্ভুত ক্রমের কোড নিরাপদে refactor করা যায়।
+🔮 **আজ ও ভবিষ্যতে:** ES Modules ও const-first স্টাইলে hoisting-নির্ভর কোড লেখার দরকার পড়ে না। আগে declare, তারপর ব্যবহার।
 
 ---
 
-## Q3. Primitive data types
+## 3️⃣ Primitive data type গুলো কী কী?
 
-**উত্তর:** ৭টি: `string`, `number`, `bigint`, `boolean`, `undefined`, `null`, `symbol`। এগুলো **immutable** ও **pass by value**। বাকি সব (array, function, object) **reference type**।
+> 🎤 **বলুন:** JavaScript-এ সাতটা primitive: string, number, bigint, boolean, undefined, null আর symbol। এগুলো immutable এবং value হিসেবে কপি হয়। বাকি সবকিছু object, যেগুলো reference হিসেবে কপি হয়।
 
-**AI যুগ:** AI API-র JSON-এ `null`/`undefined`/string-number গুলিয়ে যায়; type জানলে Zod validation ঠিকভাবে লেখা যায়।
+📌 **মূল পয়েন্ট**
+- ৭টি primitive: `string`, `number`, `bigint`, `boolean`, `undefined`, `null`, `symbol`
+- Primitive: pass by value
+- Object, Array, Function: pass by reference
+
+```javascript
+let a = 10; let b = a; b = 20;   // a এখনও 10
+const o1 = { n: 1 }; const o2 = o1;
+o2.n = 99;                       // o1.n-ও 99
+```
+
+🔮 **আজ ও ভবিষ্যতে:** টাকার হিসাবে `0.1 + 0.2` সমস্যা এড়াতে পয়সায় integer বা BigInt ব্যবহার করা প্রোডাকশনের ভালো অভ্যাস।
 
 ---
 
-## Q4. == vs ===
+## 4️⃣ == আর === এর পার্থক্য কী?
 
-**উত্তর:** `==` আগে type coercion করে তারপর তুলনা করে (`5 == "5"` → true)। `===` type ও value দুটোই মিলায়, coercion করে না (`5 === "5"` → false)। সবসময় `===` ব্যবহার করি। একমাত্র ব্যতিক্রম `x == null`।
+> 🎤 **বলুন:** == আগে type coercion করে তারপর তুলনা করে, আর === type ও value দুটোই মেলায়, কোনো coercion করে না। তাই আমি সবসময় === ব্যবহার করি। একমাত্র ব্যতিক্রম, `x == null` দিয়ে null আর undefined একসাথে চেক করা।
 
-**AI যুগ:** `eqeqeq` রুল চালু রাখলে নীরব coercion বাগ AI বা মানুষ কারো কোডেই ঢুকতে পারে না।
+📌 **মূল পয়েন্ট**
+- `==` → loose equality (coercion হয়)
+- `===` → strict equality (type ও value মিলতে হবে)
+- Object তুলনা হয় reference ধরে
+
+```javascript
+5 == "5"    // true
+5 === "5"   // false
+{} === {}   // false (আলাদা reference)
+```
+
+🔮 **আজ ও ভবিষ্যতে:** ESLint-এর `eqeqeq` রুল আর TypeScript এখন প্রায় সব প্রজেক্টে ডিফল্ট, তাই `===` ই শেষ কথা।
 
 ---
 
-## Q5. Closure
+## 5️⃣ Closure কীভাবে কাজ করে? উদাহরণ দিন।
 
-**উত্তর:** Function যখন তার নিজের lexical scope-এর variable মনে রাখে, বাইরের function শেষ হয়ে গেলেও, তখন সেটাকে closure বলে। ব্যবহার: private data, function factory, callback, debounce, React hooks।
+> 🎤 **বলুন:** Closure হলো এমন function, যে তার নিজের lexical scope-এর variable মনে রাখে, এমনকি বাইরের function শেষ হয়ে গেলেও। নিচের counter উদাহরণে count বাইরে থেকে পাওয়া যায় না, কিন্তু ভেতরের function সেটা মনে রেখে প্রতিবার বাড়ায়।
+
+📌 **মূল পয়েন্ট**
+- ব্যবহার: private data, function factory, callback, debounce
+- React Hooks আসলে closure-এর উপরেই দাঁড়িয়ে
+- সতর্কতা: অপ্রয়োজনীয় বড় ডেটা ধরে রাখলে memory leak হতে পারে
 
 ```javascript
 function createCounter() {
@@ -61,116 +104,199 @@ c(); // 1
 c(); // 2
 ```
 
-সতর্কতা: অপ্রয়োজনীয় বড় ডেটা ধরে রাখলে memory leak।
-
-**AI যুগ:** React-এ AI-কোডের সবচেয়ে সাধারণ বাগ **stale closure**; closure বুঝলে এটা দ্রুত ধরা যায়।
+🔮 **আজ ও ভবিষ্যতে:** React-এ stale closure বোঝা মানে hooks-এর সবচেয়ে সাধারণ বাগ নিজেই ধরতে পারা।
 
 ---
 
-## Q6. null vs undefined
+## 6️⃣ null আর undefined-এর পার্থক্য কী?
 
-**উত্তর:** `undefined` মানে declare হয়েছে কিন্তু মান দেওয়া হয়নি (engine বসায়)। `null` মানে ডেভেলপার ইচ্ছাকৃতভাবে "খালি" বলছে। `typeof null === "object"` (পুরনো বাগ)। `null == undefined` true, `null === undefined` false। `?.` ও `??` দিয়ে দুটোকেই সামলানো যায়।
+> 🎤 **বলুন:** undefined মানে variable declare হয়েছে কিন্তু মান দেওয়া হয়নি, এটা engine নিজে বসায়। আর null মানে আমি ইচ্ছে করে বলছি যে এখানে কোনো মান নেই। একটা পুরনো বাগ হলো `typeof null` দেয় "object"।
 
-**AI যুগ:** DB (Prisma) ও LLM response-এ optional ফিল্ড `null` হয়ে আসে, JSON-এ `undefined` বাদ পড়ে যায়।
+📌 **মূল পয়েন্ট**
+- `undefined`: মান দেওয়া হয়নি (সিস্টেম বসায়)
+- `null`: ইচ্ছাকৃতভাবে খালি (ডেভেলপার বসায়)
+- `null == undefined` true, `null === undefined` false
+
+```javascript
+let a;                 // undefined
+let b = null;          // ইচ্ছাকৃত খালি
+const name = user?.profile?.name ?? "Guest";
+```
+
+🔮 **আজ ও ভবিষ্যতে:** আধুনিক কোডে `?.` ও `??` দিয়ে দুটোকেই সহজে সামলানো হয়। Prisma ও API response-এও optional ফিল্ড সাধারণত `null` আসে।
 
 ---
 
-## Q7. Arrow function vs regular function
+## 7️⃣ Arrow function কী এবং সাধারণ function থেকে কীভাবে আলাদা?
 
-**উত্তর:** Arrow function (ES6) সংক্ষিপ্ত সিনট্যাক্স। পার্থক্য: ১) নিজস্ব `this` নেই, বাইরের scope থেকে নেয় (lexical this); ২) `arguments` নেই; ৩) `new` দিয়ে constructor হয় না; ৪) `prototype` নেই। Callback-এ ভালো, object method/constructor-এ নয়।
+> 🎤 **বলুন:** Arrow function হলো ES6-এর সংক্ষিপ্ত সিনট্যাক্স। সবচেয়ে বড় পার্থক্য, এর নিজের this নেই, বাইরের scope-এর this ব্যবহার করে। এতে arguments নেই, এবং new দিয়ে constructor হিসেবে ব্যবহার করা যায় না। তাই callback-এ arrow ভালো, কিন্তু object method বা constructor-এ নয়।
+
+📌 **মূল পয়েন্ট**
+- Lexical `this` (বাইরের scope থেকে নেয়)
+- `arguments` নেই, `prototype` নেই
+- `new` দিয়ে constructor হয় না
 
 ```javascript
 const add = (a, b) => a + b;
 const getUser = () => ({ id: 1 });
 ```
 
-**AI যুগ:** AI সবজায়গায় arrow বসায়, ভুল জায়গায় বসালে `this` ভেঙে যায়, রিভিউয়ে ধরতে হবে।
+🔮 **আজ ও ভবিষ্যতে:** React ও Node.js-এর আধুনিক কোডে callback আর `map`/`filter`/`reduce`-এ arrow function-ই প্রচলিত স্টাইল।
 
 ---
 
-## Q8. Scope chain
+## 8️⃣ Scope chain কী?
 
-**উত্তর:** ভেরিয়েবল খুঁজতে JS প্রথমে নিজের scope, না পেলে এক ধাপ বাইরে, এভাবে global পর্যন্ত যায়। এই শিকলের নাম scope chain। এটি **lexical** — function কোথায় লেখা হয়েছে সেটাই দেখানো কেন scope দেখা যাবে। না পেলে `ReferenceError`। ভেতরের নাম বাইরেরটিকে আড়াল করলে সেটা shadowing।
+> 🎤 **বলুন:** কোনো variable খুঁজতে JavaScript প্রথমে বর্তমান scope দেখে, না পেলে এক ধাপ বাইরে যায়, এভাবে global পর্যন্ত যায়। এই ধাপে ধাপে খোঁজার শিকলই scope chain। এটা lexical, অর্থাৎ function কোথায় লেখা হয়েছে সেটাই ঠিক করে সে কোন scope দেখতে পাবে।
 
-**AI যুগ:** `"use strict"` ও ES modules AI-লেখা accidental global ও shadowing বাগ ধরিয়ে দেয়।
+📌 **মূল পয়েন্ট**
+- Local → বাইরের function → global, এই ক্রমে খোঁজে
+- কোথাও না পেলে `ReferenceError`
+- ভেতরের একই নামের variable বাইরেরটাকে shadow করে
+
+```javascript
+const g = "global";
+function outer() {
+  const o = "outer";
+  function inner() {
+    console.log(o, g); // দুটোই পায়
+  }
+  inner();
+}
+```
+
+🔮 **আজ ও ভবিষ্যতে:** Scope chain-ই closure আর module system বোঝার ভিত্তি।
 
 ---
 
-## Q9. Temporal Dead Zone
+## 9️⃣ Temporal Dead Zone (TDZ) কী?
 
-**উত্তর:** `let`/`const`/`class` hoist হয় কিন্তু declaration লাইনে পৌঁছানোর আগ পর্যন্ত initialize হয় না। scope-এর শুরু থেকে সেই লাইন পর্যন্ত সময়টাই TDZ; এর ভেতর অ্যাক্সেস করলে `ReferenceError`। উদ্দেশ্য: `var`-এর নীরব `undefined` বাগ এড়ানো।
+> 🎤 **বলুন:** let, const ও class hoist হয়, কিন্তু declaration লাইনে পৌঁছানোর আগ পর্যন্ত initialize হয় না। scope-এর শুরু থেকে ওই লাইন পর্যন্ত সময়টাকেই TDZ বলে। এর মধ্যে variable ধরলে ReferenceError আসে। এটা আসলে var-এর নীরব undefined বাগ থেকে বাঁচানোর জন্য।
+
+📌 **মূল পয়েন্ট**
+- TDZ = scope-এর শুরু থেকে declaration লাইন পর্যন্ত
+- ভেতরে অ্যাক্সেস করলে `ReferenceError`
+- বাগ তাড়াতাড়ি ধরা পড়ে, এটাই সুবিধা
 
 ```javascript
 console.log(a); // ReferenceError
 let a = 10;
 ```
 
-**AI যুগ:** AI কখনো `const` function ব্যবহারের নিচে রাখে, ফলে TDZ error আসে; ক্রম ঠিক করতে হয়।
+🔮 **আজ ও ভবিষ্যতে:** এই কারণেই আধুনিক JavaScript-এ `let` ও `const`-কে `var`-এর নিরাপদ বিকল্প ধরা হয়।
 
 ---
 
-## Q10. Pure function
+## 🔟 Pure function কী? উদাহরণ দিন।
 
-**উত্তর:** দুই শর্ত: ১) একই input-এ সবসময় একই output; ২) কোনো side effect নেই (বাইরের state বদলায় না, input mutate করে না)। সুবিধা: টেস্ট, ডিবাগ ও memoize করা সহজ।
+> 🎤 **বলুন:** Pure function হলো যেটা একই input দিলে সবসময় একই output দেয়, আর বাইরের কোনো কিছু বদলায় না। এতে test করা, debug করা আর cache করা অনেক সহজ। বাস্তবে পুরো অ্যাপ pure হয় না, তাই আমি business logic pure রাখি আর API বা DB-র কাজ প্রান্তে সীমাবদ্ধ রাখি।
+
+📌 **মূল পয়েন্ট**
+- একই input → একই output
+- কোনো side effect নেই, input mutate করে না
+- সুবিধা: সহজ test, debug ও memoization
 
 ```javascript
 const addItem = (cart, item) => [...cart, item]; // pure
+
 let total = 0;
-const addToTotal = n => (total += n);              // impure
+const addToTotal = n => (total += n);            // impure
 ```
 
-**AI যুগ:** Pure function-এ AI দিয়ে unit test লেখানো সবচেয়ে সহজ ও নির্ভরযোগ্য।
+🔮 **আজ ও ভবিষ্যতে:** React reducer ও functional স্টাইল pure function-এর উপরেই দাঁড়িয়ে, আর বড় প্রজেক্টে এটাই maintainability বাড়ায়।
 
 ---
 
-## Q11. Function declaration vs function expression
+## 1️⃣1️⃣ Function declaration আর function expression-এর পার্থক্য কী?
 
-**উত্তর:** Declaration (`function f(){}`) সম্পূর্ণ hoist হয়, তাই ডিক্লেয়ারের আগেও call করা যায়। Expression (`const f = function(){}`) শুধু variable hoist হয়, মান নয়, তাই আগে call করলে error। Expression anonymous হতে পারে, callback ও IIFE-তে ব্যবহৃত হয়। Arrow function ও expression-এর আরেক রূপ।
+> 🎤 **বলুন:** Declaration সম্পূর্ণ hoist হয়, তাই ডিফাইন করার আগেও call করা যায়। Expression-এ শুধু variable hoist হয়, মান হয় না, তাই আগে call করলে error আসে। Expression anonymous হতে পারে, আর callback বা IIFE-তে বেশি ব্যবহার হয়।
 
-**AI যুগ:** প্রজেক্টে একটি ধারাবাহিক স্টাইল (ESLint/Prettier) থাকলে AI-ও সেই কনভেনশন মেনে লেখে।
-
----
-
-## Q12. Default parameters
-
-**উত্তর:** Argument দেওয়া না হলে বা `undefined` হলে ব্যবহৃত হওয়া ডিফল্ট মান। `null`, `0`, `""`-এ ডিফল্ট কাজ করে না। Runtime-এ মূল্যায়িত হয়, আগের প্র্যামিটার ব্যবহার করা যায়, destructuring-এর সাথে বেশ কাজের।
+📌 **মূল পয়েন্ট**
+- Declaration: পুরো function hoist হয়
+- Expression: শুধু variable hoist, মান নয়
+- Arrow function-ও এক ধরনের expression
 
 ```javascript
-function greet(name = "Guest") { return `Hi, ${name}`; }
-greet();      // Hi, Guest
-greet(null);  // Hi, null
+hello();                       // কাজ করে
+function hello() {}
+
+bye();                         // error
+const bye = function () {};
 ```
 
-**AI যুগ:** SDK কনফিগ `{ model, temperature = 0.7 } = {}` এভাবে পরিষ্কার API ডিজাইন করে।
+🔮 **আজ ও ভবিষ্যতে:** টিমে ESLint/Prettier দিয়ে একটি ধারাবাহিক স্টাইল ঠিক করে নেওয়াই এখন স্বাভাবিক অনুশীলন।
 
 ---
 
-## Q13. typeof অপারেটর
+## 1️⃣2️⃣ Default parameter কী?
 
-**উত্তর:** মানের ধরন string আকারে দেয়। ৮টি return মান: `"string"`, `"number"`, `"bigint"`, `"boolean"`, `"undefined"`, `"symbol"`, `"function"`, `"object"`। ফাঁদ: `typeof null` → `"object"`, `typeof []` → `"object"` (তাই `Array.isArray`), `typeof NaN` → `"number"`, declare-না-হওয়া ভেরিয়েবলে error দেয় না।
+> 🎤 **বলুন:** Function-এ argument না দিলে বা undefined দিলে যে ডিফল্ট মান ব্যবহার হয়, সেটাই default parameter। মনে রাখার বিষয়, শুধু undefined-এই এটা কাজ করে, null বা 0-তে করে না। destructuring-এর সাথে মিলিয়ে config object-এও খুব কাজে লাগে।
 
-**AI যুগ:** LLM-এর আউটপুট অবিশ্বস্ত ধরে type validation (Zod/TypeScript) বাধ্যতামূলক করুন।
-
----
-
-## Q14. Type coercion
-
-**উত্তর:** এক টাইপের মান অন্য টাইপে রূপান্তর। **Implicit** (JS নিজে করে) ও **explicit** (`Number()`, `String()`, `Boolean()`)। `+` এ string প্রাধান্য পায়, `-`/`*` এ number। Falsy মাত্র ৮টি: `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`; বাকি সব truthy (`[]`, `{}`, `"0"` ও)।
+📌 **মূল পয়েন্ট**
+- শুধু `undefined` হলে default ব্যবহার হয়
+- আগের parameter পরেরটার default-এ ব্যবহার করা যায়
+- destructuring-এর সাথে config object-এ বহুল ব্যবহৃত
 
 ```javascript
-"5" + 1;   // "51"
-"5" - 1;   // 4
-true + 1;  // 2
-input ?? 10 // 0 বৈধ মান হলে || এর জায়গায় ??
+function greet(name = "Guest") {
+  return "Hi, " + name;
+}
+greet();       // Hi, Guest
+greet(null);   // Hi, null
 ```
 
-**AI যুগ:** ফর্ম/query string-এর সবকিছু string; AI-কোড সেটা number ধরে হিসাব করলে বিলিং/ডেটা বাগ হয়।
+🔮 **আজ ও ভবিষ্যতে:** আধুনিক SDK ও লাইব্রেরির API-তে `{ port = 3000 } = {}` ধরনের কনফিগ প্যাটার্ন সর্বত্র দেখা যায়।
 
 ---
 
-## Q15. IIFE
+## 1️⃣3️⃣ typeof অপারেটর কী এবং এর return মান কী কী?
 
-**উত্তর:** Function যা ডিফাইন হওয়ার সাথে সাথেই চলে। বন্ধনী দিয়ে মোড়ানো হয় যাতে expression হিসেবে ধরা হয়। ব্যবহার: private scope, global দূষণ এড়ানো, module pattern, একবারের ইনিশিয়ালাইজেশন, async কোড চালানো। ES modules ও `let`/`const` আসায় প্রয়োজন কমেছে, তবে legacy ও bundled কোডে এখনও পাওয়া যায়।
+> 🎤 **বলুন:** typeof কোনো মানের ধরন string আকারে বলে দেয়। এর আটটি সম্ভাব্য মান: string, number, bigint, boolean, undefined, symbol, function ও object। কিছু ফাঁদ আছে: `typeof null` দেয় object, array-ও দেয় object, তাই array চেক করতে `Array.isArray` ব্যবহার করি।
+
+📌 **মূল পয়েন্ট**
+- ৮টি মান: `string`, `number`, `bigint`, `boolean`, `undefined`, `symbol`, `function`, `object`
+- `typeof null` → `"object"` (ঐতিহাসিক বাগ)
+- `typeof NaN` → `"number"`
+
+```javascript
+typeof null;        // "object"
+typeof [];          // "object"
+Array.isArray([]);  // true
+typeof undeclared;  // "undefined" (error নয়)
+```
+
+🔮 **আজ ও ভবিষ্যতে:** TypeScript আর Zod-এর মতো টুলে type validation এখন প্রায় বাধ্যতামূলক, কিন্তু typeof-ই তার মূল ভিত্তি।
+
+---
+
+## 1️⃣4️⃣ Type coercion কী? উদাহরণসহ বলুন।
+
+> 🎤 **বলুন:** এক ধরনের মানকে অন্য ধরনে রূপান্তর করাই type coercion। JavaScript নিজে করলে implicit, আর আমি `Number()` বা `String()` দিয়ে করলে explicit। যেমন + এর সাথে string থাকলে string হয়, কিন্তু - এ number। তাই ফর্মের ডেটা হিসাব করার আগে আমি explicit রূপান্তর করে নিই।
+
+📌 **মূল পয়েন্ট**
+- Falsy মাত্র ৮টি: `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`
+- বাকি সব truthy (যেমন `[]` ও `{}`)
+- `0` বৈধ মান হলে `||` এর বদলে `??` ব্যবহার করি
+
+```javascript
+"5" + 1    // "51"
+"5" - 1    // 4
+true + 1   // 2
+const qty = input ?? 10;  // 0 হলেও ঠিক থাকে
+```
+
+🔮 **আজ ও ভবিষ্যতে:** ফর্ম বা query string-এর সব মান string হয়ে আসে, তাই প্রোডাকশনে explicit রূপান্তর ও validation ছাড়া হিসাব করা ঝুঁকিপূর্ণ।
+
+---
+
+## 1️⃣5️⃣ IIFE কী?
+
+> 🎤 **বলুন:** IIFE মানে Immediately Invoked Function Expression, অর্থাৎ যে function ডিফাইন হওয়ার সাথে সাথেই চলে। বন্ধনী দিয়ে মোড়ানো হয় যাতে এটা expression হিসেবে ধরা হয়। আগে global scope দূষণ এড়াতে খুব ব্যবহার হতো, এখন ES Modules ও let/const আসায় কম লাগে, তবে async কোড চালানো আর legacy কোডে এখনও দেখা যায়।
+
+📌 **মূল পয়েন্ট**
+- ডিফাইন হওয়ামাত্র চলে
+- private scope ও module pattern তৈরিতে ব্যবহার
+- async IIFE: top-level await না থাকলে কাজে লাগে
 
 ```javascript
 (function () {
@@ -182,12 +308,4 @@ input ?? 10 // 0 বৈধ মান হলে || এর জায়গায�
 })();
 ```
 
-**AI যুগ:** AI-কোডে `(async () => {...})()` প্যাটার্ন প্রায়ই আসে, তাই বুঝতে পারা জরুরি।
-
----
-
-## শেষ মুহূর্তের ৩টি কথা (ইন্টারভিউয়ে বলার জন্য)
-
-1. "AI কোড লেখে, কিন্তু সেটা যাচাই, debug ও দায়িত্ব নেওয়ার জন্য মূল বিষয়গুলো জানা জরুরি।"
-2. "আমি শুধু মুখস্থ করি না; কেন এমন হয় আর কখন কোনটা ব্যবহার করব, সেটা বুঝি।"
-3. "Tool বদলাবে, কিন্তু JavaScript-এর এই মৌলিক নিয়মগুলো TypeScript, React, Node.js-এ একই থাকবে।"
+🔮 **আজ ও ভবিষ্যতে:** নতুন প্রজেক্টে ES Modules ব্যবহার হয়, কিন্তু পুরনো লাইব্রেরি ও bundled কোড পড়তে IIFE বোঝা জরুরি।
